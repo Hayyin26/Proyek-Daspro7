@@ -4,74 +4,117 @@ import java.util.Scanner;
 
 public class Perpustakaan {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        Scanner scan = new Scanner(System.in);
 
         String namaMhs;
         int nim;
 
-        String judul1 = "Tutorial Serenity Basic";
+        String judul1 = "C#";
         String kode_buku1 = "A001";
         String pengarang1 = "Indira";
         int thn_terbit1 = 2020;
         String penerbit1 = "Explorer";
         int stok1 = 5;
 
-        String judul2 = "Panduan Pemrograman Java";
+        String judul2 = "Java";
         String kode_buku2 = "A002";
         String pengarang2 = "Aurah";
         int thn_terbit12 = 2020;
         String penerbit2 = "Explorer";
         int stok2 = 5;
 
-        // kode program tampilkan daftar buku
-        System.out.println("DAFTAR BUKU");
-        System.out.println("1. " + judul1);
-        System.out.println("2. " + judul2);
+        boolean type = true;
 
-        // kode program tampilkan detail buku
-        System.out.println("\nDETAIL BUKU");
-        System.out.println("1. " + "Judul buku: " + judul1 + ", " + "Kode buku: " + kode_buku1 + ", "
-                + "Nama pengarang: " + pengarang1 + ", " + "Tahun terbit: " + thn_terbit1 + ", " + "Nama penerbit: "
-                + penerbit1 + ", " + "Stok: " + stok1);
-        System.out.println("2. " + "Judul buku: " + judul2 + ", " + "Kode buku: " + kode_buku2 + ", "
-                + "Nama pengarang: " + pengarang2 + ", " + "Tahun terbit: " + thn_terbit12 + ", " + "Nama penerbit: "
-                + penerbit2 + ", " + "Stok: " + stok2);
 
-        // kode program fitur transaksi peminjaman
-        System.out.println("\nFORM PEMINJAMAN BUKU");
-        System.out.println("Masukkan judul buku yang ingin dipinjam: ");
-        judul1 = sc.nextLine();
-        System.out.println("Nama Peminjam: ");
-        namaMhs = sc.nextLine();
-        System.out.println("NIM Peminjam: ");
-        nim = sc.nextInt();
-        System.out.println("Buku " + judul1 + " Berhasil dipinjam");
-        stok1--;
-        Date tanggalPeminjaman = new Date();
-        Date tanggalPengembalian = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(tanggalPengembalian);
-        calendar.add(Calendar.DAY_OF_YEAR, 14); // Tambahkan 14 hari untuk tanggal pengembalian
-        tanggalPengembalian = calendar.getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        System.out.println("Tanggal Peminjaman: " + dateFormat.format(tanggalPeminjaman));
-        System.out.println("Tanggal Pengembalian: " + dateFormat.format(tanggalPengembalian));
+        while (type) {
+        System.out.println("\nMenu:");
+        System.out.println("1. Tampilkan Daftar Buku");
+        System.out.println("2. Pinjam Buku");
+        System.out.println("3. Kembalikan Buku");
+        System.out.println("4. Tampilkan Informasi Buku");
+        System.out.println("5. Keluar");
+        System.out.print("Pilih menu (1/2/3/4/5): ");
 
-        // kode program tampilkan cek stok buku setelah transaksi peminjaman
-        System.out.println("\nKETERSEDIAAN BUKU");
-        System.out.println("1. " + "Judul buku: " + judul1 + ", " + "Kode buku: " + kode_buku1 + ", " + "Stok: " + stok1);
-        System.out.println("2. " + "Judul buku: " + judul2 + ", " + "Kode buku: " + kode_buku2 + ", " + "Stok: " + stok2);
+        int perintah = scan.nextInt();
 
-        // kode program fitur transaksi pengembalian
-        System.out.println("\nFORM PENGEMBALIAN BUKU");
-        System.out.println("Masukkan judul buku yang ingin dikembalikan: ");
-        judul1 = sc.next();
-        stok1++;
-        System.out.println("Buku " + judul1 + " telah dikembalikan.");
+            switch (perintah) {
+                // jika pilih case 1 /menu 1 maka akan menjalankan perintah case 1 dengan
+                // memunculkan daftar bukunya
+                case 1:
+                    System.out.println("\nDaftar Buku:");
+                    System.out.println("1. " + judul1);
+                    System.out.println("2. " + judul2);
+                    break;
+                // jika pilih case 2/menu 2 maka akan menjalankan perintah case 2 dengan
+                // memasukkan judul buku
+                // nahhh case 2 ini bisa disebut sebagai transaksi peminjaman
+                case 2:
+                    System.out.print("Masukkan judul buku yang ingin dipinjam: ");
+                    scan.nextLine();
+                    String judulPinjam = scan.nextLine();
+                    if (judulPinjam.equalsIgnoreCase(judul1)) {
+                        if (stok1 > 0) {
+                            stok1--;
+                            System.out.println("Buku " + judul1 + " berhasil dipinjam.");
+                        } else {
+                            System.out.println("Stok buku " + judul1 + " habis.");
+                        }
+                    } else if (judulPinjam.equalsIgnoreCase(judul2)) {
+                        if (stok2 > 0) {
+                            stok2--;
+                            System.out.println("Buku " + judul2 + " berhasil dipinjam.");
+                        } else {
+                            System.out.println("Stok buku " + judul2 + " habis.");
+                        }
+                    } else {
+                        System.out.println("Buku dengan judul " + judulPinjam + " tidak ditemukan.");
+                    }
+                    break;
+                // Nahh case 3 ini hampir sama kek case 2 kita tinggal masukno judul buku yang
+                // mau dikembalikan
+                // case 3 ini bisa disebut sebagai transaksi pengembalian
+                case 3:
+                    System.out.print("Masukkan judul buku yang ingin dikembalikan: ");
+                    scan.nextLine(); // Membersihkan buffer
+                    String judulKembali = scan.nextLine();
+                    if (judulKembali.equalsIgnoreCase(judul1)) {
+                        if (stok1 > 0) {
+                            stok1++;
+                            System.out.println("Buku " + judul1 + " berhasil dipinjam.");
+                        } else {
+                            System.out.println("Stok buku " + judul1 + " habis.");
+                        }
+                    } else if (judulKembali.equalsIgnoreCase(judul2)) {
+                        if (stok2 > 0) {
+                            stok2++;
+                            System.out.println("Buku " + judul2 + " berhasil dipinjam.");
+                        } else {
+                            System.out.println("Stok buku " + judul2 + " habis.");
+                        }
+                    } else {
+                        System.out.println("Buku dengan judul " + judulKembali + " tidak ditemukan.");
+                    }
+                    break;
 
-        // kode program tampilkan cek stok setelah transaksi pengembalian
-        System.out.println("\nDetail Buku");
-        System.out.println("1. " + "Judul buku: " + judul1 + ", " + "Kode buku: " + kode_buku1 + ", " + "Stok: " + stok1);
-        System.out.println("2. " + "Judul buku: " + judul2 + ", " + "Kode buku: " + kode_buku2 + ", " + "Stok: " + stok2);
+                // lek case 4 itu perintah nampilin info buku, dari judul buku, nama penerbit,
+                // nama pengarang, dll
+                case 4:
+                    System.out.println("\nInformasi Buku:");
+                    System.out.println("1. " + "Judul buku: " + judul1 + ", " + "Kode buku: " + kode_buku1 + ", " + "Stok: " + stok1);
+                    System.out.println("2. " + "Judul buku: " + judul2 + ", " + "Kode buku: " + kode_buku2 + ", " + "Stok: " + stok2);
+                    break;
+
+                // case 5 ini perintah logout/keluar
+                case 5:
+                    System.out.println("Terima kasih telah menggunakan sistem perpustakaan.");
+                    scan.close();
+                    System.exit(0);
+
+                    // default itu jika semua perintah salah maka bakal menjalankan perintah dari
+                    // default, outputnya bakal keluar tulisan "pilihan tidak valid bla bla bla"
+                default:
+                    System.out.println("Pilihan tidak valid. Silakan pilih lagi.");
+            }
+        }
     }
 }
