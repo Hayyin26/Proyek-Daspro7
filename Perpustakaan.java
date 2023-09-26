@@ -23,10 +23,9 @@ public class Perpustakaan {
         String penerbit2 = "Explorer";
         int stok2 = 5;
 
-        boolean type = true;
-
-
-        while (type) {
+        //boolean type = true;
+        //while (type) {
+            
         System.out.println("\nMenu:");
         System.out.println("1. Tampilkan Daftar Buku");
         System.out.println("2. Pinjam Buku");
@@ -55,14 +54,34 @@ public class Perpustakaan {
                     if (judulPinjam.equalsIgnoreCase(judul1)) {
                         if (stok1 > 0) {
                             stok1--;
+                            Date tanggalPeminjaman = new Date();
+                            Date tanggalPengembalian = new Date();
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(tanggalPengembalian);
+                            calendar.add(Calendar.DAY_OF_YEAR, 14); // Tambahkan 14 hari untuk tanggal pengembalian
+                            tanggalPengembalian = calendar.getTime();
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                            System.out.println("Tanggal Peminjaman: " + dateFormat.format(tanggalPeminjaman));
+                            System.out.println("Tanggal Pengembalian: " + dateFormat.format(tanggalPengembalian));
                             System.out.println("Buku " + judul1 + " berhasil dipinjam.");
+                            System.out.println("Judul buku: " + judul1 + ", " + "Kode buku: " + kode_buku1 + ", " + "Stok: " + stok1);
                         } else {
                             System.out.println("Stok buku " + judul1 + " habis.");
                         }
                     } else if (judulPinjam.equalsIgnoreCase(judul2)) {
                         if (stok2 > 0) {
                             stok2--;
+                            Date tanggalPeminjaman = new Date();
+                            Date tanggalPengembalian = new Date();
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(tanggalPengembalian);
+                            calendar.add(Calendar.DAY_OF_YEAR, 14); // Tambahkan 14 hari untuk tanggal pengembalian
+                            tanggalPengembalian = calendar.getTime();
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                            System.out.println("Tanggal Peminjaman: " + dateFormat.format(tanggalPeminjaman));
+                            System.out.println("Tanggal Pengembalian: " + dateFormat.format(tanggalPengembalian));
                             System.out.println("Buku " + judul2 + " berhasil dipinjam.");
+                            System.out.println("Judul buku: " + judul2 + ", " + "Kode buku: " + kode_buku2 + ", " + "Stok: " + stok2);
                         } else {
                             System.out.println("Stok buku " + judul2 + " habis.");
                         }
@@ -80,14 +99,16 @@ public class Perpustakaan {
                     if (judulKembali.equalsIgnoreCase(judul1)) {
                         if (stok1 > 0) {
                             stok1++;
-                            System.out.println("Buku " + judul1 + " berhasil dipinjam.");
+                            System.out.println("Buku " + judul1 + " berhasil diKembalikan.");
+                            System.out.println("Judul buku: " + judul1 + ", " + "Kode buku: " + kode_buku1 + ", " + "Stok: " + stok1);
                         } else {
                             System.out.println("Stok buku " + judul1 + " habis.");
                         }
                     } else if (judulKembali.equalsIgnoreCase(judul2)) {
                         if (stok2 > 0) {
                             stok2++;
-                            System.out.println("Buku " + judul2 + " berhasil dipinjam.");
+                            System.out.println("Buku " + judul2 + " berhasil dikembalikan.");
+                            System.out.println("Judul buku: " + judul2 + ", " + "Kode buku: " + kode_buku2 + ", " + "Stok: " + stok2);
                         } else {
                             System.out.println("Stok buku " + judul2 + " habis.");
                         }
@@ -115,6 +136,7 @@ public class Perpustakaan {
                 default:
                     System.out.println("Pilihan tidak valid. Silakan pilih lagi.");
             }
-        }
+        //}
+        
     }
 }
