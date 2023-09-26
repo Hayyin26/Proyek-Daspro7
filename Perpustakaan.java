@@ -23,8 +23,8 @@ public class Perpustakaan {
         String penerbit2 = "Explorer";
         int stok2 = 5;
 
-        //boolean type = true;
-        //while (type) {
+        boolean type = true;
+        while (type) {
             
         System.out.println("\nMenu:");
         System.out.println("1. Tampilkan Daftar Buku");
@@ -58,7 +58,7 @@ public class Perpustakaan {
                             Date tanggalPengembalian = new Date();
                             Calendar calendar = Calendar.getInstance();
                             calendar.setTime(tanggalPengembalian);
-                            calendar.add(Calendar.DAY_OF_YEAR, 14); // Tambahkan 14 hari untuk tanggal pengembalian
+                            calendar.add(Calendar.DAY_OF_YEAR, 7); // Tambahkan 7 hari untuk tanggal pengembalian
                             tanggalPengembalian = calendar.getTime();
                             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                             System.out.println("Tanggal Peminjaman: " + dateFormat.format(tanggalPeminjaman));
@@ -136,7 +136,7 @@ public class Perpustakaan {
                 default:
                     System.out.println("Pilihan tidak valid. Silakan pilih lagi.");
             }
-        //}
+        }
         
     }
 }
