@@ -16,6 +16,8 @@ public class Perpustakaan {
         int thn_terbit1 = 2020;
         String penerbit1 = "Explorer";
         int stok1 = 5;
+        int jmlPeminjaman1 = 0; // ni buat simpan jumlah buku
+        Date tanggalPeminjaman1 = null; // Menyimpan tanggal peminjaman buku pertama
 
         String judul2 = "Java";
         String kode_buku2 = "A002";
@@ -23,6 +25,8 @@ public class Perpustakaan {
         int thn_terbit2 = 2020;
         String penerbit2 = "Explorer";
         int stok2 = 5;
+        int jmlPeminjaman2 = 0; // ni buat simpan jumlah buku
+        Date tanggalPeminjaman2 = null; // Menyimpan tanggal peminjaman buku pertama
 
         int dendaPerMenit = 10000;
         int batasWaktuPeminjaman = 1;
@@ -63,7 +67,7 @@ public class Perpustakaan {
                     System.out.println("\nDAFTAR BUKU:");
                     System.out.println("1. " + judul1);
                     System.out.println("2. " + judul2);
-                    // break;
+                    break;
                 case 2:
                     System.out.println("\nTAMBAH BUKU");
                     System.out.print("Masukkan judul buku\t: ");
@@ -82,10 +86,11 @@ public class Perpustakaan {
                     System.out.println("Judul buku: " + judul + ", " + "Kode buku: " + kode_buku + ", "
                             + "Nama pengarang: " + pengarang + ", " + "Tahun terbit: " + thn_terbit + ", "
                             + "Nama penerbit: " + penerbit + ", " + "Stok: " + stok + " Berhasil ditambahkan");
+                    break;
 
-                    // jika pilih case 3/menu 3 maka akan menjalankan perintah case 3 dengan
-                    // memasukkan judul buku
-                    // nahhh case 3 ini bisa disebut sebagai transaksi peminjaman
+                // jika pilih case 3/menu 3 maka akan menjalankan perintah case 3 dengan
+                // memasukkan judul buku
+                // nahhh case 3 ini bisa disebut sebagai transaksi peminjaman
                 case 3:
                     System.out.println("\nFORM PEMINJAMAN");
                     System.out.println("Nama Mahasiswa\t: " + namaMhs);
@@ -95,7 +100,9 @@ public class Perpustakaan {
                     String judulPinjam = scan.nextLine();
                     if (judulPinjam.equalsIgnoreCase(judul1)) {
                         if (stok1 > 0) {
+                            jmlPeminjaman1++;
                             stok1--;
+                            System.out.println("Jumlah Stok Buku yang dipinjam: " + jmlPeminjaman1);
                             Date tanggalPeminjaman = new Date();
                             // Date tanggalPengembalian = new Date();
                             Calendar calendar = Calendar.getInstance();
@@ -109,11 +116,13 @@ public class Perpustakaan {
                             System.out.println("Judul buku: " + judul1 + ", " + "Kode buku: " + kode_buku1 + ", "
                                     + "Stok: " + stok1);
                         } else {
-                            System.out.println("Stok buku " + judul1 + " habis.");
+                            System.out.println("Stok buku " + judul1 + " tidak tersedia atau buku sedang dipinjam");
                         }
                     } else if (judulPinjam.equalsIgnoreCase(judul2)) {
                         if (stok2 > 0) {
+                            jmlPeminjaman2++;
                             stok2--;
+                            System.out.println("Jumlah Stok Buku yang dipinjam: " + jmlPeminjaman2);
                             Date tanggalPeminjaman = new Date();
                             // Date tanggalPengembalian = new Date();
                             Calendar calendar = Calendar.getInstance();
@@ -132,11 +141,11 @@ public class Perpustakaan {
                     } else {
                         System.out.println("Buku dengan judul " + judulPinjam + " tidak ditemukan.");
                     }
-                    // break;
+                    break;
 
-                    // Nahh case 3 ini hampir sama kek case 2 kita tinggal masukno judul buku yang
-                    // mau dikembalikan
-                    // case 3 ini bisa disebut sebagai transaksi pengembalian
+                // Nahh case 3 ini hampir sama kek case 2 kita tinggal masukno judul buku yang
+                // mau dikembalikan
+                // case 3 ini bisa disebut sebagai transaksi pengembalian
                 case 4:
                     System.out.println("\nFORM PENGEMBALIAN");
                     System.out.print("Masukkan judul buku yang ingin dikembalikan: ");
@@ -173,10 +182,10 @@ public class Perpustakaan {
                     } else {
                         System.out.println("Buku dengan judul " + judulKembali + " tidak ditemukan.");
                     }
-                    // break;
+                    break;
 
-                    // lek case 4 itu perintah nampilin info buku, dari judul buku, nama penerbit,
-                    // nama pengarang, dll
+                // kalau case 4 itu perintah buat menampilkan info buku, dari judul buku, nama
+                // penerbit, nama pengarang, dll
                 case 5:
                     System.out.println("\nINFORMASI BUKU:");
                     System.out.println("1. " + "Judul buku: " + judul1 + ", " + "Kode buku: " + kode_buku1 + ", "
@@ -187,9 +196,9 @@ public class Perpustakaan {
                             + "Nama pengarang: " + pengarang2 + ", " + "Tahun terbit: " + thn_terbit2 + ", "
                             + "Nama penerbit: "
                             + penerbit2 + ", " + "Stok: " + stok2);
-                    // break;
+                    break;
 
-                    // case 5 ini perintah logout/keluar
+                // case 5 ini perintah logout/keluar
                 case 6:
                     System.out.println("\nTerima kasih telah menggunakan sistem perpustakaan.");
                     scan.close();
