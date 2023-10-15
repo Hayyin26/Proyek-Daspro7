@@ -1,6 +1,5 @@
 import java.util.*;
 import java.text.*;
-import java.util.Scanner;
 
 public class Perpustakaan {
     public static void main(String[] args) {
