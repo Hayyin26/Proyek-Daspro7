@@ -7,8 +7,11 @@ public class Perpustakaan {
         Scanner scan = new Scanner(System.in);
 
         String namaMhs = "Indira";
-        String password;
         int nim = 234150001;
+
+        String usernameMhs = "234150001";
+        String passwordMhs = "123";
+        boolean login = false;
 
         String judul1 = "C#";
         String kode_buku1 = "A001";
@@ -37,19 +40,21 @@ public class Perpustakaan {
         System.out.println("SISTEM PERPUSTAKAAN");
 
         // Login
-        System.out.print("\nMasukkan Username anda: ");
-        nim = scan.nextInt();
-        System.out.print("Masukkan Password anda: ");
-        password = scan.next();
-
-        if (nim == 234150001 && password.equals("123")) {
-            System.out.println("Login Berhasil! SELAMAT DATANG " + namaMhs);
-        } else {
-            System.out.println("Login Gagal! Username atau Password salah");
+        while (!login){
+            System.out.print("\nMasukkan Username anda: ");
+            String username = scan.next();
+            System.out.print("Masukkan Password anda: ");
+            String password = scan.next();
+            if (username.equals(usernameMhs) && password.equals(passwordMhs)){
+                System.out.println("Login berhasil. Selamat datang, " + namaMhs + "!");
+                login = true;
+            } else {
+                System.out.println("Login gagal. Cek kembali username dan password Anda!");
+            }
         }
 
-        // boolean type = true;
-        // while (type) {
+        boolean type = true;
+        while (type) {
 
         System.out.println("\nMenu:");
         System.out.println("1. Tampilkan Daftar Buku");
@@ -69,7 +74,7 @@ public class Perpustakaan {
                 System.out.println("\nDAFTAR BUKU:");
                 System.out.println("1. " + judul1);
                 System.out.println("2. " + judul2);
-                // break;
+                break;
             case 2:
                 System.out.println("\nTAMBAH BUKU");
                 System.out.print("Masukkan judul buku\t: ");
@@ -88,7 +93,7 @@ public class Perpustakaan {
                 System.out.println("Judul buku: " + judul + ", " + "Kode buku: " + kode_buku + ", "
                         + "Nama pengarang: " + pengarang + ", " + "Tahun terbit: " + thn_terbit + ", "
                         + "Nama penerbit: " + penerbit + ", " + "Stok: " + stok + " Berhasil ditambahkan");
-                // break;
+                break;
 
                 // jika pilih case 3/menu 3 maka akan menjalankan perintah case 3 dengan
                 // memasukkan judul buku
@@ -145,7 +150,7 @@ public class Perpustakaan {
                 } else {
                     System.out.println("Buku dengan judul " + judulPinjam + " tidak ditemukan.");
                 }
-                // break;
+                break;
 
                 // Nahh case 4 ini hampir sama kek case 2 kita tinggal masukno judul buku yang
                 // mau dikembalikan
@@ -190,7 +195,7 @@ public class Perpustakaan {
                 } else {
                     System.out.println("Buku dengan judul " + judulKembali + " tidak ditemukan.");
                 }
-                // break;
+                break;
 
                 // kalau case 5 itu perintah buat menampilkan info buku, dari judul buku, nama
                 // penerbit, nama pengarang, dll
@@ -217,7 +222,7 @@ public class Perpustakaan {
                 } else {
                     System.out.print(" (Buku Tersedia) ");
                 }
-                // break;
+                break;
 
                 // case 5 ini perintah logout/keluar
             case 6:
@@ -229,8 +234,8 @@ public class Perpustakaan {
                 // default, outputnya bakal keluar tulisan "pilihan tidak valid bla bla bla"
             default:
                 System.out.println("Pilihan tidak valid. Silakan pilih lagi.");
+            }
         }
-    }
 
-    // }
+    }
 }
