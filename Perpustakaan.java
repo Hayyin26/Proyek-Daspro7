@@ -12,25 +12,15 @@ public class Perpustakaan {
         String passwordMhs = "123";
         boolean login = false;
 
-        String judul1 = "C#";
-        String kode_buku1 = "A001";
-        String pengarang1 = "Indira";
-        int thn_terbit1 = 2020;
-        String penerbit1 = "Explorer";
-        int stok1 = 1;
-        int jmlPeminjaman1 = 0; // ni buat simpan jumlah buku
-        Date tanggalPeminjaman1 = null; // Menyimpan tanggal peminjaman buku pertama
-        boolean statusPinjam1 = false;
-
-        String judul2 = "Java";
-        String kode_buku2 = "A002";
-        String pengarang2 = "Aurah";
-        int thn_terbit2 = 2020;
-        String penerbit2 = "Explorer";
-        int stok2 = 5;
-        int jmlPeminjaman2 = 0; // ni buat simpan jumlah buku
-        Date tanggalPeminjaman2 = null; // Menyimpan tanggal peminjaman buku pertama
-        boolean statusPinjam2 = false;
+        String[] judul = {"C#", "Java"};
+        String[] kode_buku = {"A001", "A002"};
+        String[] pengarang = {"Indira", "Nafa"};
+        int[] thn_terbit = {2020, 2022};
+        String[] penerbit = {"Explorer", "ex"};
+        int[] stok = {1, 5};
+        int[] jmlPeminjaman = {0, 0};
+        Date[] tglPeminjaman = {null, null};
+        boolean[] statusPinjam = {false, false};
 
         int dendaPerMenit = 10000;
         int batasWaktuPeminjaman = 1;
@@ -55,6 +45,7 @@ public class Perpustakaan {
         boolean type = true;
         while (type) {
 
+        System.out.println("\n========================================================================================================================");
         System.out.println("\nMenu:");
         System.out.println("1. Tampilkan Daftar Buku");
         System.out.println("2. Tambah Data Buku");
@@ -71,27 +62,28 @@ public class Perpustakaan {
             // memunculkan daftar bukunya
             case 1:
                 System.out.println("\nDAFTAR BUKU:");
-                System.out.println("1. " + judul1);
-                System.out.println("2. " + judul2);
+                for(int i = 0; i < judul.length; i++){
+                    System.out.println((i + 1) + ". " + judul[i]);
+                }
                 break;
             case 2:
                 System.out.println("\nTAMBAH BUKU");
                 System.out.print("Masukkan judul buku\t: ");
-                String judul = scan.next();
+                String title = scan.next();
                 System.out.print("Masukkan kode buku\t: ");
-                String kode_buku = scan.next();
+                String code = scan.next();
                 System.out.print("Masukkan nama pengarang\t: ");
-                String pengarang = scan.next();
+                String author= scan.next();
                 System.out.print("Masukkan tahun terbit\t: ");
-                int thn_terbit = scan.nextInt();
+                int year = scan.nextInt();
                 System.out.print("Masukkan nama penerbit\t: ");
-                String penerbit = scan.next();
+                String publisher = scan.next();
                 System.out.print("Masukkan jumlah stok\t: ");
-                int stok = scan.nextInt();
+                int stock = scan.nextInt();
 
-                System.out.println("Judul buku: " + judul + ", " + "Kode buku: " + kode_buku + ", "
-                        + "Nama pengarang: " + pengarang + ", " + "Tahun terbit: " + thn_terbit + ", "
-                        + "Nama penerbit: " + penerbit + ", " + "Stok: " + stok + " Berhasil ditambahkan");
+                System.out.println("Judul buku: " + title + ", " + "Kode buku: " + code + ", "
+                        + "Nama pengarang: " + author + ", " + "Tahun terbit: " + year + ", "
+                        + "Nama penerbit: " + publisher + ", " + "Stok: " + stock + " Berhasil ditambahkan");
                 break;
 
                 // jika pilih case 3/menu 3 maka akan menjalankan perintah case 3 dengan
@@ -104,50 +96,29 @@ public class Perpustakaan {
                 System.out.print("\nMasukkan judul buku yang ingin dipinjam: ");
                 scan.nextLine();
                 String judulPinjam = scan.nextLine();
-                if (judulPinjam.equalsIgnoreCase(judul1)) {
-                    if (stok1 > 0 && !statusPinjam1) {
-                        statusPinjam1 = true;
-                        jmlPeminjaman1++;
-                        stok1--;
-                        System.out.println("Jumlah Stok Buku yang dipinjam: " + jmlPeminjaman1); // status
-                        Date tanggalPeminjaman = new Date();
-                        // Date tanggalPengembalian = new Date();
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(tanggalPengembalian);
-                        calendar.add(Calendar.MINUTE, 1); // Tambahkan 1 menit untuk tanggal pengembalian
-                        tanggalPengembalian = calendar.getTime();
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        System.out.println("Tanggal Peminjaman\t: " + dateFormat.format(tanggalPeminjaman));
-                        System.out.println("Tanggal Pengembalian\t: " + dateFormat.format(tanggalPengembalian));
-                        System.out.println("Buku " + judul1 + " berhasil dipinjam.");
-                        System.out.println("Judul buku: " + judul1 + ", " + "Kode buku: " + kode_buku1 + ", "
-                                + "Stok: " + stok1);
-                    } else {
-                        System.out.println("Stok buku " + judul1 + " tidak tersedia atau buku sedang dipinjam");
+                for(int i = 0; i<judul.length; i++){
+                    if (judulPinjam.equalsIgnoreCase(judul[i])) {
+                        if (stok[i] > 0 && !statusPinjam[i]) {
+                            statusPinjam[i] = true;
+                            jmlPeminjaman[i]++;
+                            stok[i]--;
+                            System.out.println("Jumlah Stok Buku yang dipinjam: " + jmlPeminjaman[i]); // status
+                            Date tanggalPeminjaman = new Date();
+                            // Date tanggalPengembalian = new Date();
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(tanggalPengembalian);
+                            calendar.add(Calendar.MINUTE, 1); // Tambahkan 1 menit untuk tanggal pengembalian
+                            tanggalPengembalian = calendar.getTime();
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                            System.out.println("Tanggal Peminjaman\t: " + dateFormat.format(tanggalPeminjaman));
+                            System.out.println("Tanggal Pengembalian\t: " + dateFormat.format(tanggalPengembalian));
+                            System.out.println("Buku " + judul[i] + " berhasil dipinjam.");
+                            System.out.println("Judul buku: " + judul[i] + ", " + "Kode buku: " + kode_buku[i] + ", "
+                                + "Stok: " + stok[i]);
+                        }else{
+                            System.out.println("Stok buku " + judul[i] + " tidak tersedia atau buku sedang dipinjam");
+                        }
                     }
-                } else if (judulPinjam.equalsIgnoreCase(judul2)) {
-                    if (stok2 > 0 && !statusPinjam2) {
-                        statusPinjam2 = true;
-                        jmlPeminjaman2++;
-                        stok2--;
-                        System.out.println("Jumlah Stok Buku yang dipinjam: " + jmlPeminjaman2);
-                        Date tanggalPeminjaman = new Date();
-                        // Date tanggalPengembalian = new Date();
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(tanggalPengembalian);
-                        calendar.add(Calendar.MINUTE, 1); // Tambahkan 1 menit untuk tanggal pengembalian
-                        tanggalPengembalian = calendar.getTime();
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        System.out.println("Tanggal Peminjaman\t: " + dateFormat.format(tanggalPeminjaman));
-                        System.out.println("Tanggal Pengembalian\t: " + dateFormat.format(tanggalPengembalian));
-                        System.out.println("Buku " + judul2 + " berhasil dipinjam.");
-                        System.out.println("Judul buku: " + judul2 + ", " + "Kode buku: " + kode_buku2 + ", "
-                                + "Stok: " + stok2);
-                    } else {
-                        System.out.println("Stok buku " + judul2 + " tidak tersedia atau buku sedang dipinjam");
-                    }
-                } else {
-                    System.out.println("Buku dengan judul " + judulPinjam + " tidak ditemukan.");
                 }
                 break;
 
@@ -159,40 +130,23 @@ public class Perpustakaan {
                 System.out.print("Masukkan judul buku yang ingin dikembalikan: ");
                 // scan.nextLine(); // Membersihkan buffer
                 String judulKembali = scan.next();
-                if (judulKembali.equalsIgnoreCase(judul1)) {
-                    if (statusPinjam1) {
-                        statusPinjam1 = false;
-                        stok1++;
-                        System.out.println("Buku " + judul1 + " berhasil dikembalikan.");
-                        System.out.println("Judul buku: " + judul1 + ", " + "Kode buku: " + kode_buku1 + ", "
-                                + "Stok: " + stok1);
-                        long selisihMenit = (new Date().getTime() - tanggalPengembalian.getTime()) / (60 * 1000);
+                for (int i = 0; i < judul.length; i++) {
+                    if (judulKembali.equalsIgnoreCase(judul[i])) {
+                        if (statusPinjam[i]) {
+                            statusPinjam[i] = false;
+                            stok[i]++;
+                            System.out.println("Buku " + judul[i] + " berhasil dikembalikan.");
+                            System.out.println("Judul buku: " + judul[i] + ", " + "Kode buku: " + kode_buku[i] + ", "
+                                + "Stok: " + stok[i]);
+                            long selisihMenit = (new Date().getTime() - tanggalPengembalian.getTime()) / (60 * 1000);
                         if (selisihMenit > 0) {
                             double denda = dendaPerMenit * selisihMenit;
                             System.out.println("Denda yang harus dibayar: Rp. " + denda);
                         }
                     } else {
-                        System.out.println("Buku " + judul1 + " tidak sedang dipinjam.");
+                        System.out.println("Buku " + judul[i] + " tidak sedang dipinjam.");
                     }
-
-                } else if (judulKembali.equalsIgnoreCase(judul2)) {
-                    if (statusPinjam2) {
-                        statusPinjam2 = false;
-                        stok2++;
-                        System.out.println("Buku " + judul2 + " berhasil dikembalikan.");
-                        System.out.println("Judul buku: " + judul2 + ", " + "Kode buku: " + kode_buku2 + ", "
-                                + "Stok: " + stok2);
-                        long selisihMenit = (new Date().getTime() - tanggalPengembalian.getTime()) / (60 * 1000);
-                        if (selisihMenit > 0) {
-                            double denda = dendaPerMenit * selisihMenit;
-                            System.out.println("Denda yang harus dibayar: Rp. " + denda);
-                        }
-                    } else {
-                        System.out.println("Buku " + judul2 + " tidak sedang dipinjam.");
-                    }
-
-                } else {
-                    System.out.println("Buku dengan judul " + judulKembali + " tidak ditemukan.");
+                }
                 }
                 break;
 
@@ -200,26 +154,16 @@ public class Perpustakaan {
                 // penerbit, nama pengarang, dll
             case 5:
                 System.out.println("\nINFORMASI BUKU:");
-                System.out.print("1. " + "Judul buku: " + judul1 + ", " + "Kode buku: " + kode_buku1 + ", "
-                        + "Nama pengarang: " + pengarang1 + ", " + "Tahun terbit: " + thn_terbit1 + ", "
+                for (int i = 0; i < judul.length; i++) {
+                    System.out.println((i + 1)+". "+ "Judul buku: " + judul[i] + ", " + "Kode buku: " + kode_buku[i] + ", "
+                        + "Nama pengarang: " + pengarang[i] + ", " + "Tahun terbit: " + thn_terbit[i] + ", "
                         + "Nama penerbit: "
-                        + penerbit1 + ", " + "Stok: " + stok1);
-
-                if (statusPinjam1) {
-                    System.out.print((" (Buku Sedang Dipinjam) "));
-                } else {
-                    System.out.print(" (Buku Tersedia) ");
-                }
-
-                System.out.print("\n2. " + "Judul buku: " + judul2 + ", " + "Kode buku: " + kode_buku2 + ", "
-                        + "Nama pengarang: " + pengarang2 + ", " + "Tahun terbit: " + thn_terbit2 + ", "
-                        + "Nama penerbit: "
-                        + penerbit2 + ", " + "Stok: " + stok2);
-
-                if (statusPinjam2) {
-                    System.out.print((" (Buku Sedang Dipinjam) "));
-                } else {
-                    System.out.print(" (Buku Tersedia) ");
+                        + penerbit[i] + ", " + "Stok: " + stok[i]);
+                    if (statusPinjam[i]) {
+                        System.out.println((" (Buku Sedang Dipinjam) "));
+                    } else {
+                        System.out.println(" (Buku Tersedia) ");
+                    }
                 }
                 break;
 
