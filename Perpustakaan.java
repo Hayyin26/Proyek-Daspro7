@@ -5,11 +5,9 @@ public class Perpustakaan {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 
-        String namaMhs = "Indira";
-        int nim = 234150001;
-
-        String usernameMhs = "234150001";
-        String passwordMhs = "123";
+        String[] namaMhs = {"Indira","Luqman","Hayyin"};
+        String[] usernameMhs = {"234150001","2341720077","2341720226"};
+        String[] passwordMhs = {"123","asd","asd"};
         boolean login = false;
 
         String[] judul = {"C#", "Java"};
@@ -34,10 +32,14 @@ public class Perpustakaan {
             String username = scan.next();
             System.out.print("Masukkan Password anda: ");
             String password = scan.next();
-            if (username.equals(usernameMhs) && password.equals(passwordMhs)){
-                System.out.println("Login berhasil. Selamat datang, " + namaMhs + "!");
-                login = true;
-            } else {
+            for (int i = 0; i < usernameMhs.length; i++){
+                if (username.equals(usernameMhs[i]) && password.equals(passwordMhs[i])){
+                    System.out.println("Login berhasil. Selamat datang, " + namaMhs[i] + "!");
+                    login = true;
+                }
+            } 
+            
+            if (!login) {
                 System.out.println("Login gagal. Cek kembali username dan password Anda!");
             }
         }
@@ -92,7 +94,7 @@ public class Perpustakaan {
             case 3:
                 System.out.println("\nFORM PEMINJAMAN");
                 System.out.println("Nama Mahasiswa\t: " + namaMhs);
-                System.out.println("NIM\t\t: " + nim);
+                System.out.println("NIM\t\t: " + usernameMhs);
                 System.out.print("\nMasukkan judul buku yang ingin dipinjam: ");
                 scan.nextLine();
                 String judulPinjam = scan.nextLine();
