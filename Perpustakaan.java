@@ -2,13 +2,15 @@ import java.util.*;
 import java.text.*;
 
 public class Perpustakaan {
-    public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
+    static Scanner scan = new Scanner(System.in);
 
-        //Deklarasi dan Inisialisasi Variabel
-        String[] namaMhs = {"Indira","Luqman","Hayyin"};
-        String[] usernameMhs = {"2341720001","2341720077","2341720226"};
-        String[] passwordMhs = {"123","asd","asd"};
+    public static void main(String[] args) {
+        // Deklarasi dan Inisialisasi Variabel
+        String[] namaMhs = new String[0];
+        String[] usernameMhs = new String[0];
+        String[] passwordMhs = new String[0];
+        String[] pinMhs = new String[0];
+        String[] emailMhs = new String[0];
         String namaMahasiswa = "";
         String nimMhs = "";
         boolean login = false;
@@ -19,13 +21,39 @@ public class Perpustakaan {
         };
 
         int dendaPerMenit = 10000;
-        // int batasWaktuPeminjaman = 1;
         Date tanggalPengembalian = new Date();
 
         System.out.println("SISTEM PERPUSTAKAAN");
 
+        // Registrasi
+        System.out.println("=== Register ===");
+        namaMhs = Arrays.copyOf(namaMhs, namaMhs.length + 1);
+        usernameMhs = Arrays.copyOf(usernameMhs, usernameMhs.length + 1);
+        passwordMhs = Arrays.copyOf(passwordMhs, passwordMhs.length + 1);
+        pinMhs = Arrays.copyOf(pinMhs, pinMhs.length + 1);
+        emailMhs = Arrays.copyOf(emailMhs, emailMhs.length + 1);
+
+        System.out.print("Enter Username: ");
+        usernameMhs[usernameMhs.length - 1] = scan.nextLine();
+
+        System.out.print("Enter Password: ");
+        while (true) {
+            passwordMhs[passwordMhs.length - 1] = scan.nextLine();
+            if (passwordMhs[passwordMhs.length - 1].length() >= 8) {
+                break;
+            } else {
+                System.out.println("Password minimal harus 8 huruf/angka. Coba lagi!");
+            }
+        }
+
+        namaMahasiswa = namaMhs[namaMhs.length - 1];
+        nimMhs = usernameMhs[usernameMhs.length - 1];
+
+        System.out.println("Registrasi berhasil.");
+
         // Login
         while (!login){
+            System.out.print("\n=== Login ===");
             System.out.print("\nMasukkan Username anda: ");
             String username = scan.next();
             System.out.print("Masukkan Password anda: ");
@@ -37,7 +65,7 @@ public class Perpustakaan {
                     nimMhs = usernameMhs[i];
                     login = true;
                 }
-            } 
+            }
         
             if (!login) {
                 System.out.println("Login gagal. Cek kembali username dan password Anda!");
@@ -49,22 +77,29 @@ public class Perpustakaan {
         while (type) {
 
         System.out.println("\n==========MENU==========");
-        System.out.println("1. Tampilkan Daftar Buku");
+        System.out.println("1. Informasi Buku");
         System.out.println("2. Tambah Data Buku");
         System.out.println("3. Pinjam Buku");
         System.out.println("4. Kembalikan Buku");
-        System.out.println("5. Tampilkan Informasi Buku");
-        System.out.println("6. Keluar");
-        System.out.print("\nPilih menu (1/2/3/4/5/6): ");
+        System.out.println("5. Keluar");
+        System.out.print("\nPilih menu (1/2/3/4/5): ");
 
         int perintah = scan.nextInt();
 
         switch (perintah) {
-            // Case pertama "Daftar Buku" yang hanya menampilkan "Judul Buku"
+            // Case ke-1 "Informasi Buku" meliputi data buku dan status buku
             case 1:
-                System.out.println("\n==========DAFTAR BUKU==========");
-                for(int i = 0; i < dataBuku.length; i++){
-                    System.out.println((i + 1) + ". " + dataBuku[i][0]);
+                System.out.println("\n==========INFORMASI BUKU==========");
+                for (int i = 0; i < dataBuku.length; i++) {
+                    System.out.println((i + 1) + ". " + "Judul buku: " + dataBuku[i][0] + ", " + "Kode buku: " + dataBuku[i][1] + ", "
+                            + "Nama pengarang: " + dataBuku[i][2] + ", " + "Tahun terbit: " + dataBuku[i][3] + ", "
+                            + "Nama penerbit: " + dataBuku[i][4] + ", " + "Stok: " + dataBuku[i][5]);
+                    boolean statusPinjam = Boolean.parseBoolean(dataBuku[i][8]);
+                    if (statusPinjam) {
+                        System.out.println((" (Buku Sedang Dipinjam) "));
+                    } else {
+                        System.out.println(" (Buku Tersedia) ");
+                    }
                 }
                 break;
 
@@ -148,30 +183,14 @@ public class Perpustakaan {
                 }
                 break;
 
-            // Case ke-5 "Informasi Buku" meliputi data buku dan status buku
+                // Case ke-5 ini perintah logout/keluar
             case 5:
-                System.out.println("\n==========INFORMASI BUKU==========");
-                for (int i = 0; i < dataBuku.length; i++) {
-                    System.out.println((i + 1) + ". " + "Judul buku: " + dataBuku[i][0] + ", " + "Kode buku: " + dataBuku[i][1] + ", "
-                            + "Nama pengarang: " + dataBuku[i][2] + ", " + "Tahun terbit: " + dataBuku[i][3] + ", "
-                            + "Nama penerbit: " + dataBuku[i][4] + ", " + "Stok: " + dataBuku[i][5]);
-                    boolean statusPinjam = Boolean.parseBoolean(dataBuku[i][8]);
-                    if (statusPinjam) {
-                        System.out.println((" (Buku Sedang Dipinjam) "));
-                    } else {
-                        System.out.println(" (Buku Tersedia) ");
-                    }
-                }
-                break;
-
-                // Case ke-6 ini perintah logout/keluar
-            case 6:
                 System.out.println("\nTerima kasih telah menggunakan sistem perpustakaan.");
                 scan.close();
                 System.exit(0);
 
             default:
-                System.out.println("Pilihan tidak valid. Silakan pilih lagi.");
+                System.out.println("\nPilihan tidak valid. Silakan pilih lagi.");
             }
         }
     }
