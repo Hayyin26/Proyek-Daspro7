@@ -4,6 +4,7 @@ import java.text.*;
 public class Perpustakaan {
     static Scanner scan = new Scanner(System.in);
     static boolean bukuTersedia = false; // sebagai penanda judul buku ditemukan atau tidak
+    static Date tanggalPeminjaman = new Date();
     static Date tanggalPengembalian = new Date();
     static String namaMahasiswa = "";
     static String nimMhs = "";
@@ -13,7 +14,11 @@ public class Perpustakaan {
     static boolean login = false;
     static boolean isPetugas = false;
     static final int MAX_BUKU = 100;
-
+    static String judulBuku;
+    static final int MAX_ANTRIAN = 100;
+    static String[][] riwayatPeminjaman = new String[MAX_ANTRIAN][3]; // Menyimpan judul buku, tanggal peminjaman, dan tanggal pengembalian
+    static int jumlahRiwayatPeminjaman = 0;
+    static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     public static void main(String[] args) {
         // Deklarasi dan Inisialisasi Variabel
         String[] nama = new String[10];
@@ -69,8 +74,9 @@ public class Perpustakaan {
             System.out.println("5. Riwayat Antrian");
             System.out.println("6. Hapus Data Buku");
             System.out.println("7. Update Data Buku");
-            System.out.println("8. Keluar");
-            System.out.print("\nPilih menu (1/2/3/4/5/6/7/8): ");
+            System.out.println("8. Riwayat Transaksi");
+            System.out.println("9. Keluar");
+            System.out.print("\nPilih menu (1/2/3/4/5/6/7/8/9): ");
 
             int perintah = scan.nextInt();
 
@@ -97,6 +103,7 @@ public class Perpustakaan {
                     kembalikanBuku(dataBuku, antrianPeminjaman, riwayatAntrian, tanggalPengembalian, dendaPerMenit, isPetugas);
                     break;
 
+                //Case ke 5 
                 case 5:
                     tampilkanRiwayatAntrian(riwayatAntrian);
                     break;
@@ -106,14 +113,15 @@ public class Perpustakaan {
                     break;
 
                 case 7:
-                    System.out.println("Masukkan judul buku yang ingin diupdate: ");
-                    scan.nextLine(); // Buang newline
-                    String judulBuku = scan.nextLine();
-                    updateDataBuku (dataBuku, judulBuku);
+                    updateDataBuku (dataBuku, judulBuku, isPetugas);
                     break;
 
-                // Case ke-5 ini perintah logout/keluar
                 case 8:
+                    tampilkanRiwayatTransaksi();
+                    break;
+
+                // Case ke-8 Perintah logout/keluar
+                case 9:
                     System.out.println("\nTerima kasih telah menggunakan sistem perpustakaan.");
                     scan.close();
                     System.exit(0);
@@ -214,11 +222,13 @@ public class Perpustakaan {
                     (i + 1) + ". " + "Judul buku\t: " + book[0] + "\n   Kode buku\t: " + book[1] +
                             "\n   Pengarang\t: " + book[2] + "\n   Tahun terbit\t: " + book[3] + 
                             "\n   Penerbit\t: " + book[4] + "\n   Stok\t\t: " + book[5]);
+            //Status Buku
+            int stock = Integer.parseInt(book[5]);
             boolean statusPinjam = Boolean.parseBoolean(book[8]);
-            if (statusPinjam) {
-                System.out.println(("   (Buku Sedang Dipinjam)\n"));
-            } else {
+            if (stock > 0 ) {
                 System.out.println("   (Buku Tersedia)\n");
+            } else {
+                System.out.println("   (Buku Tidak Tersedia)\n");
             }
         }
     }
@@ -257,7 +267,7 @@ public class Perpustakaan {
             System.out.println("\nMaaf, Anda tidak memiliki akses untuk fitur ini.\n");
         }
         return totalBuku; // Kembalikan jumlah buku tanpa perubahan jika tidak ditambahkan buku baru
-    }
+    } 
 
     // Fungsi untuk proses Peminjaman Buku
     public static void pinjamBuku(String[][] dataBuku, String[] antrianPeminjaman,
@@ -299,7 +309,7 @@ public class Perpustakaan {
                     System.out.println("______________________________________________________________________________\n");
                     System.out.println("Stok yang tersedia: " + book[5] + "\n");
                 } else {
-                    System.out.println("Stok buku " + book[0] + " tidak tersedia atau buku sedang dipinjam\n");
+                    System.out.println("\nStok buku " + book[0] + " tidak tersedia atau buku sedang dipinjam");
                     System.out.print("Apakah Anda ingin masuk antrian peminjaman? (ya/tidak): ");
                     String jawaban = scan.next();
                     if (jumlahAntrian < MAX_ANTRIAN && jawaban.equalsIgnoreCase("ya")) {
@@ -309,13 +319,15 @@ public class Perpustakaan {
                         jumlahRiwayat++;
                         System.out.println("Anda telah masuk ke antrian peminjaman untuk buku " + judulPinjam + "\n");
                     }else
-                    System.out.println("");
+                        System.out.println("");
                 }
             }
         }
 
         if (!bukuTersedia) {
             System.out.println("Maaf, buku dengan judul '" + judulPinjam + "' tidak ditemukan\n");
+        } else{
+            tambahRiwayatPeminjaman(judulPinjam, tanggalPeminjaman, tanggalPengembalian);
         }
     }
 
@@ -340,6 +352,17 @@ public class Perpustakaan {
                     if (statusPinjam) {
                         book[8] = "false";
                         book[5] = String.valueOf(Integer.parseInt(book[5]) + 1);
+
+                    // Inisialisasi tanggalPengembalian
+                    tanggalPengembalian = new Date();
+                    
+                    // Tambahkan pengembalian buku ke riwayat peminjaman
+                    for (int j = 0; j < jumlahRiwayatPeminjaman; j++) {
+                        if (judulKembali.equalsIgnoreCase(riwayatPeminjaman[j][0]) && riwayatPeminjaman[j][2] == null) {
+                            riwayatPeminjaman[j][2] = dateFormat.format(tanggalPengembalian); // Update tanggal pengembalian
+                            break;
+                        }
+                    }
                         System.out.print("_____________________________________________________________________________\n");
                         System.out.println("\nNama Mahasiswa\t: " + namaMahasiswa);
                         System.out.println("NIM Mahasiswa\t: " + nimMhs);
@@ -398,75 +421,129 @@ public class Perpustakaan {
         }
     }
 
-    public static void updateDataBuku(String[][] dataBuku, String judulBuku) {
-        boolean bukuDitemukan = false;
-        for (int i = 0; i < dataBuku.length; i++) {
-            String[] book = dataBuku[i];
-        if (judulBuku.equalsIgnoreCase(book[0])) {
-            bukuDitemukan = true;
-            boolean updateLagi = true;
-        while (updateLagi) {
-            System.out.println("Data saat ini:");
-            System.out.println("1. Judul buku: " + book[0]);
-            System.out.println("2. Kode buku: " + book[1]);
-            System.out.println("3. Pengarang: " + book[2]);
-            System.out.println("4. Tahun terbit: " + book[3]);
-            System.out.println("5. Penerbit: " + book[4]);
-            System.out.println("6. Stok: " + book[5]);
-    
-            System.out.print("Pilih data yang ingin diubah (1-6) atau 0 untuk selesai: ");
-            int choice = scan.nextInt();
-            scan.nextLine(); // Buang newline
-    
-            if (choice == 0) {
-                updateLagi = false; // Pengguna selesai melakukan pembaruan
-            } else if (choice >= 1 && choice <= 6) {
-                System.out.print("Masukkan data baru: ");
-                String newData = scan.nextLine();
-    
-                switch (choice) {
-                    case 1:
-                        book[0] = newData;
-                        break;
-                    case 2:
-                        book[1] = newData;
-                        break;
-                    case 3:
-                        book[2] = newData;
-                        break;
-                    case 4:
-                        book[3] = newData;
-                        break;
-                    case 5:
-                        book[4] = newData;
-                        break;
-                    case 6:
-                        book[5] = newData;
-                        break;
-                    default:
-                        System.out.println("Pilihan tidak valid.");
-                        break;
-                }
-                System.out.println("Data buku berhasil diupdate!");
-    
-                System.out.print("Apakah ada data lain yang ingin diupdate? (ya/tidak): ");
-                String jawaban = scan.nextLine();
+    public static void tambahRiwayatPeminjaman(String judulBuku, Date tanggalPeminjaman, Date tanggalPengembalian) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        riwayatPeminjaman[jumlahRiwayatPeminjaman][0] = judulBuku;
+        riwayatPeminjaman[jumlahRiwayatPeminjaman][1] = dateFormat.format(tanggalPeminjaman);
+        riwayatPeminjaman[jumlahRiwayatPeminjaman][2] = null; // Set tanggal pengembalian null saat dipinjam
+        jumlahRiwayatPeminjaman++;
+    }
 
-                while (!jawaban.equalsIgnoreCase("ya") && !jawaban.equalsIgnoreCase("tidak")) {
-                    System.out.println("Pilihan tidak valid. Apakah ada data lain yang ingin diupdate? (ya/tidak): ");
-                    jawaban = scan.nextLine();
+    public static void tampilkanRiwayatTransaksi() {
+        System.out.println("\n=========================< RIWAYAT TRANSAKSI >=========================\n");
+        
+        if (jumlahRiwayatPeminjaman == 0) {
+            System.out.println("Tidak ada riwayat transaksi.\n");
+        } else {
+            System.out.println("Riwayat Peminjaman dan Pengembalian:\n");
+            for (int i = 0; i < jumlahRiwayatPeminjaman; i++) {
+                System.out.println("Judul Buku: " + riwayatPeminjaman[i][0]);
+                System.out.println("Tanggal Peminjaman: " + riwayatPeminjaman[i][1]);
+                System.out.print("Tanggal Pengembalian: ");
+                if (riwayatPeminjaman[i][2] != null) {
+                    System.out.println(riwayatPeminjaman[i][2]);
+                } else {
+                    System.out.println("Belum dikembalikan");
                 }
-
-                if (jawaban.equalsIgnoreCase("ya")) {
-                    updateLagi = true; // Jika pengguna ingin melakukan pembaruan lagi
-                }else{
-                    updateLagi = false; // Jika pengguna tidak ingin melakukan pembaruan lagi
-                }
-            } else {
-                System.out.println("Pilihan tidak valid.");
+                System.out.println();
             }
         }
     }
+
+    public static void updateDataBuku(String[][] dataBuku, String judulBuku, boolean isPetugas) {
+        if (isPetugas) {
+            System.out.println("\n===========================< UPDATE DATA BUKU >===============================\n");
+            System.out.print("Masukkan judul buku yang ingin diupdate: ");
+            scan.nextLine(); // Buang newline
+            judulBuku = scan.nextLine();
+        boolean bukuDitemukan = false;
+        for (int i = 0; i < dataBuku.length; i++) {
+            String[] book = dataBuku[i];
+            if (judulBuku.equalsIgnoreCase(book[0])) {
+                bukuDitemukan = true;
+                boolean updateLagi = true;
+                while (updateLagi) {
+                    System.out.println("\nData saat ini\t:");
+                    System.out.println("1. Judul buku\t: " + book[0]);
+                    System.out.println("2. Kode buku\t: " + book[1]);
+                    System.out.println("3. Pengarang\t: " + book[2]);
+                    System.out.println("4. Tahun terbit\t: " + book[3]);
+                    System.out.println("5. Penerbit\t: " + book[4]);
+                    System.out.println("6. Stok\t\t: " + book[5]);
+                    
+                    System.out.print("\nPilih data yang ingin diubah (1-6) atau 0 untuk selesai: ");
+                    int choice = scan.nextInt();
+                    scan.nextLine(); // Buang newline
+            
+                    if (choice == 0) {
+                        updateLagi = false; // Pengguna selesai melakukan pembaruan
+                    } else if (choice >= 1 && choice <= 6) {
+                        System.out.print("Masukkan data baru: ");
+                        String newData = scan.nextLine();
+            
+                        switch (choice) {
+                            case 1:
+                                book[0] = newData;
+                                break;
+                            case 2:
+                                book[1] = newData;
+                                break;
+                            case 3:
+                                book[2] = newData;
+                                break;
+                            case 4:
+                                book[3] = newData;
+                                break;
+                            case 5:
+                                book[4] = newData;
+                                break;
+                            case 6:
+                                book[5] = newData;
+
+                                // // Perbarui status ketersediaan buku berdasarkan stok baru
+                                int newStock = Integer.parseInt(newData);
+                                if (newStock == 0) {
+                                    book[8] = "false"; // Jika stok buku menjadi 0, maka status buku tidak tersedia
+                                } else {
+                                    book[8] = "true"; // Jika stok buku lebih besar dari 0, maka buku tersedia
+                                }
+                                break;
+                            default:
+                                System.out.println("Pilihan tidak valid.");
+                                break;
+                        }
+                        System.out.println("Data buku berhasil diupdate!");
+            
+                        System.out.print("\nApakah ada data lain yang ingin diupdate? (ya/tidak): ");
+                        String jawaban = scan.nextLine();
+                        System.out.print("");
+
+                        while (!jawaban.equalsIgnoreCase("ya") && !jawaban.equalsIgnoreCase("tidak")) {
+                            System.out.println("Pilihan tidak valid. Apakah ada data lain yang ingin diupdate? (ya/tidak): ");
+                            jawaban = scan.nextLine();
+                        }
+
+                        if (jawaban.equalsIgnoreCase("ya")) {
+                            updateLagi = true; // Jika pengguna ingin melakukan pembaruan lagi
+                        }else{
+                            updateLagi = false; // Jika pengguna tidak ingin melakukan pembaruan lagi
+                        }
+                    } else {
+                        System.out.println("Pilihan tidak valid.");
+                    }
+                }
+                break; //keluar dari loop
+            }
+        }
+        if (!bukuDitemukan) {
+            System.out.println("Maaf, buku dengan judul '" + judulBuku + "' tidak ditemukan\n");
+            // Meminta input judul buku lagi untuk melakukan update
+            System.out.println("Silakan masukkan judul buku yang ingin diupdate: ");
+            judulBuku = scan.nextLine();
+            updateDataBuku(dataBuku, judulBuku, isPetugas); // Panggil kembali fungsi updateDataBuku dengan judul yang baru
+        }
+    }else {
+        System.out.println("Maaf, Anda tidak memiliki akses untuk fitur ini.\n");
     }
     }
     
