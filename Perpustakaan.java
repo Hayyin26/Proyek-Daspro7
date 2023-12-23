@@ -324,7 +324,7 @@ public class Perpustakaan {
             System.out.println("Maaf, ruang untuk menambahkan buku baru sudah penuh.\n");
         }
         return totalBuku; // Kembalikan jumlah buku tanpa perubahan jika tidak ditambahkan buku baru
-    }
+    } 
 
     // Fungsi untuk proses Peminjaman Buku
     public static void pinjamBuku(String[][] dataBuku, String[] antrianPeminjaman,
@@ -556,7 +556,6 @@ public class Perpustakaan {
                     } else if (choice >= 1 && choice <= 6) {
                         System.out.print("Masukkan data baru: ");
                         String newData = scan.nextLine();
-
                         switch (choice) {
                             case 1:
                                 book[0] = newData;
